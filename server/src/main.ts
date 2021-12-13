@@ -8,5 +8,5 @@ app.get("/", (request: express.Request, response: express.Response) => {
 });
 
 app.listen(4340, () => {
-    console.log("Server started!");
+    console.log("started server");
 });
