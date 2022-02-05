@@ -27,7 +27,8 @@ export class WeatherAPIService {
         }
     }
 
-    private async insertWeatherData(): Promise<void> {
 
+    private async insertWeatherData(): Promise<void> {
+        return;
     }
 }
