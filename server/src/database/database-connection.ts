@@ -17,6 +17,7 @@ export class DatabaseConnection {
     }
 
     private initDatabaseConnection(): void {
+        console.log("creating connection: ", this.weatherStation.configService.config);
         this.pool = mariadb.createPool(this.weatherStation.configService.config.database);
     }
     private async createTables(): Promise<void> {
