@@ -11,8 +11,7 @@ export class CurrentWeatherValuesComponent implements OnInit {
     public weatherData: WeatherData | undefined;
     public temperatureSensor: Sensor | undefined;
 
-    constructor(private weatherService: WeatherService) {
-    }
+    constructor(private weatherService: WeatherService) {}
 
     public ngOnInit(): void {
         this.weatherService.subscribeWeatherData(this.onWeatherData.bind(this));

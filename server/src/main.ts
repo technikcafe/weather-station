@@ -1,16 +1,28 @@
 import express = require("express");
 import axios from "axios";
-import { WeatherAPI } from "./weather-api";
+import { WeatherAPIService } from "./services/weather-api";
+import { ExpressService } from "./services/express";
+import { ConfigService } from "./services/config";
+import { DatabaseConnection } from "./database/database-connection";
 
-const app = express();
+export class WeatherStation {
+    // services
+    public configService: ConfigService;
+    public databaseConnection: DatabaseConnection;
+    public expressService: ExpressService;
+    public weatherAPIService: WeatherAPIService;
 
-app.use(express.static("./web/dist/"));
-app.get("/", (request: express.Request, response: express.Response) => {
-    response.sendFile("./web/dist/index.html");
-});
+    constructor() {
+        this.initServices();
+    }
 
-new WeatherAPI(app);
+    private async initServices() {
+        this.configService = new ConfigService();
+        this.databaseConnection = new DatabaseConnection(this);
+        await this.databaseConnection.init();
+        this.expressService = new ExpressService(this);
+        this.weatherAPIService = new WeatherAPIService(this);
+    }
+}
 
-app.listen(4340, () => {
-    console.log("started server");
-});
+
