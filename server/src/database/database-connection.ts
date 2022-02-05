@@ -1,6 +1,7 @@
 import { WeatherStation } from "../main";
 import mariadb = require("mariadb");
 import { Pool } from "mariadb";
+import {DatabaseTable} from "../enums/mariadb-table";
 
 export class DatabaseConnection {
     private pool: Pool;
