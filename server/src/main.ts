@@ -24,5 +24,4 @@ export class WeatherStation {
         this.weatherAPIService = new WeatherAPIService(this);
     }
 }
-
-
+new WeatherStation();
