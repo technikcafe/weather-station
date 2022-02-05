@@ -1,20 +1,16 @@
-import { Config } from "../interfaces/config";
-import fs = require("fs");
-import path = require("path");
-
-export class ConfigService {
-    public config: Config;
-    public configFolder: string;
-    public configPath: string;
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConfigService = void 0;
+const fs = require("fs");
+const path = require("path");
+class ConfigService {
     constructor() {
         this.configFolder = path.resolve("./config");
         this.configPath = path.join(this.configFolder, "./config.json");
         this.loadConfig();
         this.save();
     }
-
-    private loadConfig(): void {
+    loadConfig() {
         if (!fs.existsSync(this.configFolder)) {
             fs.mkdirSync(this.configFolder);
         }
@@ -28,17 +24,13 @@ export class ConfigService {
                     port: 4040,
                 },
             };
-        } else {
-            this.config = JSON.parse(
-                fs.readFileSync(this.configPath).toString()
-            );
+        }
+        else {
+            this.config = JSON.parse(fs.readFileSync(this.configPath).toString());
         }
     }
-
-    public save(): void {
-        fs.writeFileSync(
-            this.configPath,
-            JSON.stringify(this.config, undefined, 2)
-        );
+    save() {
+        fs.writeFileSync(this.configPath, JSON.stringify(this.config, undefined, 2));
     }
 }
+exports.ConfigService = ConfigService;

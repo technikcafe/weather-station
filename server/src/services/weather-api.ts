@@ -6,9 +6,7 @@ import { WeatherStation } from "../main";
 export class WeatherAPIService {
     public weatherData: WeatherData;
 
-    constructor(
-        private weatherStation: WeatherStation
-    ) {
+    constructor(private weatherStation: WeatherStation) {
         // get data every 60 Seconds
         setInterval(this.getWeatherData.bind(this), 60 * 1000);
 
@@ -26,7 +24,6 @@ export class WeatherAPIService {
             this.insertWeatherData();
         }
     }
-
 
     private async insertWeatherData(): Promise<void> {
         return;

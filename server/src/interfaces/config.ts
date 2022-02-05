@@ -1,8 +1,9 @@
 export interface Config {
     database: {
-        host: string,
-        user: string,
-        password: string,
-        connectionLimit: number
-    }
+        host: string;
+        user: string;
+        password: string;
+        connectionLimit: number;
+        port: number;
+    };
 }

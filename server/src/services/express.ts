@@ -5,9 +5,7 @@ import { WeatherStation } from "../main";
 export class ExpressService {
     private app: express.Express;
 
-    constructor(
-        private weatherStation: WeatherStation
-    ) {
+    constructor(private weatherStation: WeatherStation) {
         this.initApp();
     }
 
@@ -17,9 +15,12 @@ export class ExpressService {
         // add all asset files
         this.app.use(express.static("./web/dist/"));
 
-        this.app.get("/", (request: express.Request, response: express.Response) => {
-            response.sendFile("./web/dist/index.html");
-        });
+        this.app.get(
+            "/",
+            (request: express.Request, response: express.Response) => {
+                response.sendFile("./web/dist/index.html");
+            }
+        );
 
         this.initWeatherRequests();
 
@@ -32,7 +33,9 @@ export class ExpressService {
         this.app.get(
             "/api/weather",
             async (request: express.Request, response: express.Response) => {
-                response.json(this.weatherStation.weatherAPIService.weatherData);
+                response.json(
+                    this.weatherStation.weatherAPIService.weatherData
+                );
             }
         );
     }
