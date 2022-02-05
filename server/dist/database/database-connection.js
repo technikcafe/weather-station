@@ -23,13 +23,12 @@ class DatabaseConnection {
         });
     }
     initDatabaseConnection() {
-        console.log("creating connection: ", this.weatherStation.configService.config);
         this.pool = mariadb.createPool(this.weatherStation.configService.config.database);
     }
     createTables() {
         return __awaiter(this, void 0, void 0, function* () {
             for (const value of Object.values(mariadb_table_1.DatabaseTable)) {
-                const statement = `CREATE TABLE weather.${value.name} (${value.args})`;
+                const statement = `CREATE TABLE IF NOT EXISTS weather.${value.name} (${value.args})`;
                 const connection = yield this.pool.getConnection();
                 yield connection.query(statement);
                 connection.release();

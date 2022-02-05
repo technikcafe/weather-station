@@ -8,4 +8,4 @@ class DatabaseTable {
     }
 }
 exports.DatabaseTable = DatabaseTable;
-DatabaseTable.LAST_30_DAYS = new DatabaseTable("last_30_days", "timestamp int, sensorid varchar(255), value varchar(255)");
+DatabaseTable.LAST_30_DAYS = new DatabaseTable("last_30_days", "timestamp bigint, sensorid varchar(255), value varchar(255)");

@@ -4,7 +4,7 @@ import { Pool } from "mariadb";
 import { DatabaseTable } from "../enums/mariadb-table";
 
 export class DatabaseConnection {
-    private pool: Pool;
+    public pool: Pool;
 
     constructor(private weatherStation: WeatherStation) {}
 
@@ -20,7 +20,7 @@ export class DatabaseConnection {
     }
     private async createTables(): Promise<void> {
         for (const value of Object.values(DatabaseTable)) {
-            const statement = `CREATE TABLE weather.${value.name} (${value.args})`;
+            const statement = `CREATE TABLE IF NOT EXISTS weather.${value.name} (${value.args})`;
             const connection = await this.pool.getConnection();
             await connection.query(statement);
             connection.release();

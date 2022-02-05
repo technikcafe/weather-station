@@ -32,6 +32,18 @@ class ExpressService {
         this.app.get("/api/weather", (request, response) => __awaiter(this, void 0, void 0, function* () {
             response.json(this.weatherStation.weatherAPIService.weatherData);
         }));
+        this.app.get("/api/weather/history", (request, response) => __awaiter(this, void 0, void 0, function* () {
+            let dayDifference = request.query.days === undefined
+                ? undefined
+                : parseInt(request.query.days);
+            if (dayDifference === undefined)
+                dayDifference = 7;
+            const date = new Date();
+            date.setDate(date.getDate() - dayDifference);
+            const timestamp = date.getTime();
+            const resultPoints = this.weatherStation.weatherAPIService.historyPoints.filter((point) => point.timestamp >= timestamp);
+            response.json(resultPoints);
+        }));
     }
 }
 exports.ExpressService = ExpressService;

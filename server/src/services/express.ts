@@ -1,4 +1,4 @@
-import { WeatherAPIService } from "./weather-api";
+import { HistoryPoint, WeatherAPIService } from "./weather-api";
 import express = require("express");
 import { WeatherStation } from "../main";
 
@@ -36,6 +36,26 @@ export class ExpressService {
                 response.json(
                     this.weatherStation.weatherAPIService.weatherData
                 );
+            }
+        );
+        this.app.get(
+            "/api/weather/history",
+            async (request: express.Request, response: express.Response) => {
+                let dayDifference: number | undefined =
+                    request.query.days === undefined
+                        ? undefined
+                        : parseInt(<string>request.query.days);
+                if (dayDifference === undefined) dayDifference = 7;
+
+                const date = new Date();
+                date.setDate(date.getDate() - dayDifference);
+                const timestamp = date.getTime();
+
+                const resultPoints: Array<HistoryPoint> =
+                    this.weatherStation.weatherAPIService.historyPoints.filter(
+                        (point) => point.timestamp >= timestamp
+                    );
+                response.json(resultPoints);
             }
         );
     }
