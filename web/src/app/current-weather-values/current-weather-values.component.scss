@@ -1,0 +1,58 @@
+.current-value-div {
+    position: relative;
+    width: 125px;
+    max-width: 60vw;
+
+    overflow-y: hidden;
+
+    margin: 20px;
+}
+.current-value-padding {
+    position: relative;
+    padding-top: 50%;
+}
+.current-value {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+
+    font-size: calc(min(125px, 60vw) * 0.2);
+
+    color: black;
+}
+.current-value > * {
+    text-align: center;
+}
+.current-value-half-circle {
+    position: absolute;
+    z-index: -1;
+
+    border-style: solid;
+    border-width: calc(min(250px, 60vw) * 0.05);
+
+    left: 0;
+    top: 0;
+
+    height: 200%;
+    width: 100%;
+
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 5px 0 white, 0 0 5px 0 white inset;
+}
+
+.information-card {
+    position: relative;
+    color: white;
+
+    border-style: solid;
+    border-radius: 10px;
+    border-color: rgb(20, 20, 20);
+
+    margin: 10px;
+    background-color: rgb(100, 100, 100);
+
+    padding: 10px;
+}

@@ -25,6 +25,8 @@
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "eslint": "^8.4.1",
+    "matercolors": "^2.3.0",
+    "nice-color-palettes": "^3.0.0",
     "prettier": "^2.5.1",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
