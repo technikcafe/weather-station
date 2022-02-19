@@ -14,6 +14,7 @@
     "package_start": "cd ./web && npm install",
     "postpackage_start": "npm start"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
