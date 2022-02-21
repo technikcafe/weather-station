@@ -15,7 +15,7 @@ export class WeatherAPIService {
 
     constructor(private weatherStation: WeatherStation) {
         // get data every 60 Seconds
-        setInterval(this.getWeatherData.bind(this), 10 * 60 * 1000);
+        setInterval(this.getWeatherData.bind(this), 5 * 60 * 1000);
 
         this.getWeatherData();
 
