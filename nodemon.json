@@ -1,0 +1,22 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "node_modules/**/node_modules"
+  ],
+  "verbose": true,
+  "execMap": {
+    "js": "npm start"
+  },
+  "events": {
+    "restart": "echo 'Restarted Application'"
+  },
+  "watch": [
+    "test/fixtures/",
+    "test/samples/"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "ts,css,html,json"
+}

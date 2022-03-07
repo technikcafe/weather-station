@@ -1,17 +1,13 @@
 <div class="d-flex flex-column flex-nowrap">
-    <div class="information-card flex-grow-1">
-        <h4>Technikcafe Wetterdaten</h4>
-        <label>
-            Dies sind Wetterdaten, die mit der API der Weathersensebox-API verbunden sind
-        </label>
-    </div>
-    <div class="d-flex flex-wrap flex-row align-self-center justify-content-center flex-grow-1 w-100 mt-3">
+    <div class="position-relative weather-values m-4 d-flex flex-wrap flex-row align-self-stretch justify-content-center flex-grow-1 mt-3">
         <ng-container *ngFor="let sensor of weatherData?.sensors">
-            <div class="current-value-div temperature-value flex-grow-1" *ngIf="sensor.lastMeasurement !== undefined">
-                <div class="current-value-padding"></div>
-                <div class="current-value d-flex flex-column flex-nowrap"><label>{{sensor?.lastMeasurement?.value}}{{sensor?.unit}}</label><small style="font-size: 0.5em">{{sensor.title}}</small></div>
-                <div class="current-value-half-circle" [style.border-color]="getColor()"></div>
+            <div class="current-value-div temperature-value align-content-center justify-content-center flex-grow-1" *ngIf="sensor.lastMeasurement !== undefined">
+                <div class="position-absolute top-card">
+                    <div class="position-relative current-value d-flex flex-column flex-nowrap"><label>{{sensor?.lastMeasurement?.value}}{{sensor?.unit}}</label><small style="font-size: 0.5em">{{sensor.title}}</small></div>
+                </div>
             </div>
         </ng-container>
+
+        <div class="value-background position-absolute center"></div>
     </div>
 </div>

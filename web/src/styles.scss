@@ -1,3 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 body {
 }
+
+.title {
+    color: #0000ff;
+}
+.spacer {
+    position: relative;
+    width: 80%;
+    height: 3px;
+    margin: 10px 10% 10px 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.center {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
