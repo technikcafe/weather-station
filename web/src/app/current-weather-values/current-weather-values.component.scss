@@ -3,7 +3,7 @@
     width: 125px;
     max-width: 60vw;
 
-    overflow-y: hidden;
+    overflow: hidden;
 
     padding: 10px;
 
@@ -13,21 +13,25 @@
     min-height: 150px;
 }
 .top-card {
-    left: 0;
+    right: 0;
     top: 0;
     width: 100%;
     height: 100%;
+    transition: all 0.5s;
+    background-color: rgba(255, 255, 255, 1);
 }
 .current-value-div:hover > .top-card {
-    width: 20%;
+    width: 100%;
     height: 10%;
+    background-color: rgba(0, 0, 0, 0);
 }
 .current-value-div:hover > .top-card > .current-value {
     transform: translate(0%, 0%);
-    left: 0;
+    right: 0;
     top: 0;
     padding: 5px;
     opacity: 60%;
+    font-size: calc(min(125px, 60vw) * 0.1);
 }
 .value-background {
     background-color: rgb(150, 150, 150);
@@ -35,16 +39,16 @@
     width: 85%;
     height: 85%;
 }
-.current-value {
+.current-value-div > .top-card > .current-value {
     font-size: calc(min(125px, 60vw) * 0.2);
 
     color: black;
 
-    transform: translate(-50%, -50%);
-    left: 50%;
+    transform: translate(50%, -50%);
+    right: 50%;
     top: 50%;
 
-    transition: top 0.5s, left 0.5s;
+    transition: all 0.5s;
 }
 .current-value > * {
     text-align: center;

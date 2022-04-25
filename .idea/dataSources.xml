@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Datenbank - Wetter" uuid="1107e69b-84f3-4063-a8f8-6ce413167d7d">
+    <data-source source="LOCAL" name="@38.242.243.8" uuid="20e9f585-f331-4ccb-bf33-15fec482070f">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://45.133.9.153:4343</jdbc-url>
+      <jdbc-url>jdbc:mariadb://38.242.243.8:3010</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

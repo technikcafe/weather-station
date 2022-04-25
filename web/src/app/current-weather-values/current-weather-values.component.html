@@ -5,6 +5,7 @@
                 <div class="position-absolute top-card">
                     <div class="position-relative current-value d-flex flex-column flex-nowrap"><label>{{sensor?.lastMeasurement?.value}}{{sensor?.unit}}</label><small style="font-size: 0.5em">{{sensor.title}}</small></div>
                 </div>
+                <app-graph [sensorID]="sensor._id" [small]="true"></app-graph>
             </div>
         </ng-container>
 
