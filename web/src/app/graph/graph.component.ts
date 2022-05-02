@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+} from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import {
     Chart,
@@ -17,9 +23,19 @@ import { IDService } from '../services/id/i-d.service';
     templateUrl: './graph.component.html',
     styleUrls: ['./graph.component.scss'],
 })
-export class GraphComponent implements OnInit {
+export class GraphComponent implements OnInit, OnChanges {
+    private readonly MAX_POINTS_PER_SMALL_GRAPH = 40;
+    private readonly MAX_POINTS_PER_MAX_GRAPH = 250;
+
     @Input('sensorID') public sensorID = '61a4e1ac4a7833001b7d81e2';
     @Input('small') public small = false;
+    @Input('show') public show = false;
+
+    private weatherData: WeatherData | undefined;
+    private weatherHistory: Array<HistoryPoint> = [];
+    private chart: Chart | undefined;
+
+    public sensorTitle = '';
 
     public readonly id: number;
 
@@ -28,23 +44,73 @@ export class GraphComponent implements OnInit {
         private weatherService: WeatherService
     ) {
         this.id = this.idService.getID();
-        this.weatherService.subscribeWeatherHistory(this.drawChart.bind(this));
     }
 
     public ngOnInit(): void {
-        return;
+        if (!this.small) {
+            this.show = true;
+            this.weatherService.onSensorIDUpdate.subscribe((data) => {
+                this.sensorID = data;
+                if (this.chart !== undefined) this.chart.destroy();
+                if (this.weatherHistory === undefined) return;
+                this.drawChart(this.weatherHistory);
+
+                if (this.weatherData !== undefined) {
+                    const title = this.weatherData.sensors.find(
+                        (sensor) => sensor._id === this.sensorID
+                    )?.title;
+                    if (title !== undefined) {
+                        this.sensorTitle = title;
+                    }
+                }
+            });
+        }
+        this.weatherService.subscribeWeatherHistory((data) => {
+            this.weatherHistory = data;
+            if (this.show) this.drawChart(this.weatherHistory);
+        });
+        this.weatherService.subscribeWeatherData((data) => {
+            this.weatherData = data;
+            const title = data.sensors.find(
+                (sensor) => sensor._id === this.sensorID
+            )?.title;
+            if (title !== undefined) {
+                this.sensorTitle = title;
+            }
+        });
+    }
+
+    public ngOnChanges(changes: SimpleChanges) {
+        if (changes['show'] !== undefined) {
+            if (changes['show'].currentValue) {
+                this.drawChart(this.weatherHistory);
+            } else if (this.chart !== undefined) {
+                this.chart.destroy();
+                this.chart = undefined;
+            }
+        }
     }
 
     private async drawChart(
         weatherHistory: Array<HistoryPoint>
     ): Promise<void> {
         const data: Array<{ x: number; y: number }> = [];
-        for (const point of weatherHistory) {
+        for (
+            let i = 0;
+            i < weatherHistory.length;
+            i +=
+                weatherHistory.length /
+                (this.small
+                    ? this.MAX_POINTS_PER_SMALL_GRAPH
+                    : this.MAX_POINTS_PER_MAX_GRAPH)
+        ) {
+            const point = weatherHistory[Math.floor(i)];
             data.push({
                 x: point.timestamp,
                 y: <number>point[this.sensorID],
             });
         }
+        console.log('POINT:', data);
 
         const config: ChartConfiguration = {
             type: 'scatter',
@@ -101,6 +167,8 @@ export class GraphComponent implements OnInit {
             config
         );
         chart.render();
+
+        this.chart = chart;
         console.log('Finished rendering.');
     }
 }

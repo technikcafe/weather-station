@@ -11,6 +11,7 @@ export class CurrentWeatherValuesComponent implements OnInit {
     public weatherData: WeatherData | undefined;
     public temperatureSensor: Sensor | undefined;
     public coldness = 1;
+    public sensorsToShow: Array<string> = [];
 
     public paletteColors: string[] = [
         '#FC4F4F',
@@ -21,7 +22,7 @@ export class CurrentWeatherValuesComponent implements OnInit {
     ];
     public indexCount = 0;
 
-    constructor(private weatherService: WeatherService) {}
+    constructor(public weatherService: WeatherService) {}
 
     public ngOnInit(): void {
         this.weatherService.subscribeWeatherData(this.onWeatherData.bind(this));
@@ -49,5 +50,16 @@ export class CurrentWeatherValuesComponent implements OnInit {
             this.indexCount = 0;
         }
         return <string>this.paletteColors[this.indexCount];
+    }
+
+    public showSensor(sensorID: string) {
+        console.log('show sensor:', sensorID);
+        if (!this.sensorsToShow.includes(sensorID))
+            this.sensorsToShow.push(sensorID);
+    }
+    public hideSensor(sensorID: string) {
+        this.sensorsToShow = this.sensorsToShow.filter(
+            (obj) => obj !== sensorID
+        );
     }
 }

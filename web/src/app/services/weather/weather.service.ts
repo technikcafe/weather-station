@@ -14,6 +14,7 @@ export class WeatherService {
     >();
     private historyPoints: Array<HistoryPoint> = [];
     private historyDaysDistance = 0;
+    public onSensorIDUpdate: EventEmitter<string> = new EventEmitter<string>();
 
     constructor() {
         this.getWeatherData().then(() => {
