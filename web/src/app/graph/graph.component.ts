@@ -110,7 +110,6 @@ export class GraphComponent implements OnInit, OnChanges {
                 y: <number>point[this.sensorID],
             });
         }
-        console.log('POINT:', data);
 
         const config: ChartConfiguration = {
             type: 'scatter',
@@ -120,11 +119,14 @@ export class GraphComponent implements OnInit, OnChanges {
                         label: 'Lichtverlauf',
                         data: data,
                         showLine: true,
-                        borderColor: 'rgb(255, 0, 0)',
+                        borderColor: 'rgb(0, 0, 255)',
                     },
                 ],
             },
             options: {
+                hover: {
+                    intersect: false,
+                },
                 scales: {
                     x: {
                         ticks: {
