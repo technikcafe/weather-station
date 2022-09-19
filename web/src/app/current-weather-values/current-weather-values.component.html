@@ -1,11 +1,13 @@
 <div class="d-flex flex-column flex-nowrap">
     <div class="position-relative weather-values m-4 d-flex flex-wrap flex-row align-self-stretch justify-content-center flex-grow-1 mt-3">
         <ng-container *ngFor="let sensor of weatherData?.sensors">
-            <div (click)="weatherService.onSensorIDUpdate.emit(sensor._id)" (mouseenter)="showSensor(sensor._id)" (mouseleave)="hideSensor(sensor._id)" class="current-value-div temperature-value align-content-center justify-content-center flex-grow-1" *ngIf="sensor.lastMeasurement !== undefined">
+            <div (click)="weatherService.onSensorIDUpdate.emit(sensor._id)" (mouseenter)="showSensor(sensor._id)" (mouseleave)="hideSensor(sensor._id)" class="d-flex flex-row flex-nowrap current-value-div temperature-value align-content-center justify-content-center flex-grow-1" *ngIf="sensor.lastMeasurement !== undefined">
                 <div class="position-absolute top-card">
                     <div class="position-relative current-value d-flex flex-column flex-nowrap"><label>{{sensor?.lastMeasurement?.value}}{{sensor?.unit}}</label><small style="font-size: 0.5em">{{sensor.title}}</small></div>
                 </div>
+                <div class="flex-grow-1"></div>
                 <app-graph [sensorID]="sensor._id" [small]="true" [show]="sensorsToShow.includes(sensor._id)"></app-graph>
+                <div class="flex-grow-1"></div>
             </div>
         </ng-container>
 
