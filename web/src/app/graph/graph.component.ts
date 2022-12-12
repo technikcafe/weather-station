@@ -2,6 +2,7 @@ import {
     Component,
     Input,
     OnChanges,
+    OnDestroy,
     OnInit,
     SimpleChanges,
 } from '@angular/core';
@@ -17,15 +18,18 @@ import { WeatherService } from '../services/weather/weather.service';
 import { WeatherData } from '../interfaces/weather-data';
 import { HistoryPoint } from '../interfaces/history-point';
 import { IDService } from '../services/id/i-d.service';
+import { filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-graph',
     templateUrl: './graph.component.html',
     styleUrls: ['./graph.component.scss'],
 })
-export class GraphComponent implements OnInit, OnChanges {
+export class GraphComponent implements OnInit, OnChanges, OnDestroy {
     private readonly MAX_POINTS_PER_SMALL_GRAPH = 40;
     private readonly MAX_POINTS_PER_MAX_GRAPH = 250;
+
+    private destroy$: Subject<void> = new Subject<void>();
 
     @Input('sensorID') public sensorID = '61a4e1ac4a7833001b7d81e2';
     @Input('small') public small = false;
@@ -65,19 +69,24 @@ export class GraphComponent implements OnInit, OnChanges {
                 }
             });
         }
-        this.weatherService.subscribeWeatherHistory((data) => {
-            this.weatherHistory = data;
-            if (this.show) this.drawChart(this.weatherHistory);
-        });
-        this.weatherService.subscribeWeatherData((data) => {
-            this.weatherData = data;
-            const title = data.sensors.find(
-                (sensor) => sensor._id === this.sensorID
-            )?.title;
-            if (title !== undefined) {
-                this.sensorTitle = title;
-            }
-        });
+        this.weatherService.weatherHistory$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(async (data) => {
+                this.weatherHistory = data;
+                if (this.show) await this.drawChart(this.weatherHistory);
+            });
+        this.weatherService.weatherData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(async (data) => {
+                if (!data) return;
+                this.weatherData = data;
+                const title = data.sensors.find(
+                    (sensor) => sensor._id === this.sensorID
+                )?.title;
+                if (title !== undefined) {
+                    this.sensorTitle = title;
+                }
+            });
     }
 
     public ngOnChanges(changes: SimpleChanges) {
@@ -172,5 +181,10 @@ export class GraphComponent implements OnInit, OnChanges {
 
         this.chart = chart;
         console.log('Finished rendering.');
+    }
+
+    public ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

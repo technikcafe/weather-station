@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Sensor, WeatherData } from '../interfaces/weather-data';
 import { WeatherService } from '../services/weather/weather.service';
+import { filter, Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-current-weather-values',
     templateUrl: './current-weather-values.component.html',
     styleUrls: ['./current-weather-values.component.scss'],
 })
-export class CurrentWeatherValuesComponent implements OnInit {
+export class CurrentWeatherValuesComponent implements OnInit, OnDestroy {
+    private destroy$: Subject<void> = new Subject<void>();
+
     public weatherData: WeatherData | undefined;
     public temperatureSensor: Sensor | undefined;
     public coldness = 1;
@@ -25,7 +28,11 @@ export class CurrentWeatherValuesComponent implements OnInit {
     constructor(public weatherService: WeatherService) {}
 
     public ngOnInit(): void {
-        this.weatherService.subscribeWeatherData(this.onWeatherData.bind(this));
+        this.weatherService.weatherData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((x) => {
+                if (x) this.onWeatherData(x);
+            });
     }
 
     private onWeatherData(weatherData: WeatherData) {
@@ -61,5 +68,10 @@ export class CurrentWeatherValuesComponent implements OnInit {
         this.sensorsToShow = this.sensorsToShow.filter(
             (obj) => obj !== sensorID
         );
+    }
+
+    public ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

@@ -49,12 +49,22 @@ class WeatherAPIService {
         return __awaiter(this, void 0, void 0, function* () {
             const boxID = "61a4e1ac4a7833001b7d81d8";
             const sensebox_api_url = `https://api.opensensemap.org/boxes/${boxID}`;
-            const senseboxData = yield (yield axios_1.default.get(sensebox_api_url)).data;
+            let senseboxData = yield (yield axios_1.default.get(sensebox_api_url)).data;
             if (senseboxData !== undefined) {
+                senseboxData = this.controlLastUpdate(senseboxData);
                 this.weatherData = senseboxData;
                 this.insertWeatherData();
             }
         });
+    }
+    controlLastUpdate(weatherData) {
+        const date = new Date(weatherData.lastMeasurementAt).getTime();
+        const currentDate = Date.now();
+        const delta = currentDate - date;
+        const seconds = delta / 1000;
+        const minutes = seconds / 60;
+        weatherData.minutesOffline = Math.floor(minutes);
+        return weatherData;
     }
     insertWeatherData() {
         return __awaiter(this, void 0, void 0, function* () {

@@ -4,6 +4,11 @@
         <label>
             Dies sind Wetterdaten, die mit der API der Weathersensebox-API verbunden sind
         </label>
+        <ng-container *ngIf="weatherService.weatherData$ | async as weatherData">
+           <ng-container *ngIf="weatherData && weatherData.minutesOffline >= 60">
+               <p class="text-danger">Es scheint, als seien die Wetterdaten veraltet. Die letzte Aktualisierung der Daten war vor {{(weatherData.minutesOffline / 60) | number: "1.0-0"}} Stunden</p>
+           </ng-container>
+        </ng-container>
         <div class="spacer"></div>
     </div>
     <app-current-weather-values></app-current-weather-values>

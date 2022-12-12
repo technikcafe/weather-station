@@ -29,4 +29,6 @@ export interface WeatherData {
         geometry: any;
         type: string;
     }>;
+
+    minutesOffline: number;
 }
